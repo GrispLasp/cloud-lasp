@@ -1,0 +1,40 @@
+.eunit
+*.o
+*.beam
+*.plt
+node/rebar3.crashdump
+erl_crash.dump
+ebin
+node/log/
+node/_elixir_build/
+node/_build/
+node/_grisp/
+.concrete/DEV_MODE
+.rebar
+# node/grisp/grisp_base/files/*
+# node/grisp/grisp_base/files/
+# .rebar3
+# !_checkouts/
+# .eunit
+# *.o
+# *.beam
+# *.plt
+# *.swp
+# *.swo
+# .erlang.cookie
+# ebin
+# log
+# erl_crash.dump
+# .rebar
+# logs
+# _build/
+# .idea
+# rebar3.crashdump
+#
+# # GRiSP
+# _grisp/
+# # !_checkouts/grisp/src/*
+# # !_checkouts/grisp/grisp_base/*
+#
+# # Partisan
+# # !_checkouts/partisan/src

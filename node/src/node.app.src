@@ -1,0 +1,17 @@
+{application, node, [
+    {description, "Cloud Lasp"},
+    {vsn, "0.1.0"},
+    {registered, []},
+    {mod, {node_app, []}},
+    {applications, [
+        kernel,
+        stdlib,
+        sasl
+    ]},
+    {env,[]},
+    {modules, []},
+
+    {maintainers, []},
+    {licenses, ["Apache 2.0"]},
+    {links, []}
+]}.
