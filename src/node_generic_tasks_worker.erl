@@ -116,7 +116,7 @@ handle_call({find_and_start_task}, _From, State = #state{running_tasks=RTasks, f
 
 handle_call({isRunning, TaskName}, _From, State = #state{running_tasks=RunningTasks, finished_tasks=_}) ->
   TaskRunning = [{Name, Targets, Fun, {TaskPid, TaskRef}} || {Name, Targets, Fun, {TaskPid, TaskRef}} <- RunningTasks, Name =:= TaskName],
-  case lists:length(TaskRunning) of
+  case length(TaskRunning) of
     0 -> {reply, false, State};
     1 -> {reply, true, State};
     _ -> {reply, more_than_one_task, State}
@@ -270,7 +270,7 @@ start_all_tasks_periodically(RunningTasks, FinishedTasks) ->
   TasksList = node_generic_tasks_server:get_all_tasks(),
   logger:log(info, "=== Tasks list ~p ===~n", [TasksList]),
   FilteredTaskList = filter_task_list(TasksList, RunningTasks),
-  case lists:length(FilteredTaskList) of
+  case length(FilteredTaskList) of
     0 ->
       {ko, no_tasks_to_run};
     _ ->
