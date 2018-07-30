@@ -51,9 +51,6 @@ start(_StartType, _StartArgs) ->
     % Adding a new task in Lasp :
     % add_task1(),
 
-    LEDs = [1, 2],
-    [grisp_led:flash(L, aqua, 500) || L <- LEDs],
-
     PeerConfig = lasp_partisan_peer_service:manager(),
     logger:log(notice, "The manager used is ~p ~n", [PeerConfig]),
 

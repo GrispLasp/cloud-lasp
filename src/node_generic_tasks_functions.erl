@@ -73,8 +73,7 @@ sonar_sensor(Mode, NodeTarget) ->
               lasp:update({"<<exits>>", state_gcounter}, increment, self())
           end
         end),
-        grisp_led:color(1,blue),
-        grisp_led:color(2,blue),
+
       %  timer:sleep(500),
       %  grisp_led:color(1,green),
       %  grisp_led:color(2,green),
@@ -87,8 +86,7 @@ sonar_sensor(Mode, NodeTarget) ->
     receive
       Msg ->
       %  logger:log(info, "=== received ~p ===~n", [Mode]),
-        grisp_led:color(1,red),
-        grisp_led:color(2,red),
+
         PidSonar = whereis(pmod_maxsonar),
         erlang:suspend_process(PidSonar),
         logger:log(notice, "suspending_process~n"),

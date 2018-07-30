@@ -126,11 +126,9 @@ ping(PingList, N, Type) when N > 0 ->
     ListToJoin = lists:filter(Ping, ToPing),
     if Type == full -> ping(ListToJoin, 0, full);
        true ->
-	   grisp_led:flash(1, blue, 500),
 	   ping(ListToJoin, N - 1, partial)
     end;
 ping(PingList, 0, _Type) ->
-    grisp_led:color(1, green),
     Join = fun (X) -> lasp_peer_service:join(X) end,
     lists:foreach(Join, PingList),
     PingList.
