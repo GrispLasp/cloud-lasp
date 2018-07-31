@@ -140,7 +140,7 @@ handle_info({start_all_tasks}, State =
         logger:log(info, "=== No tasks to run ===~n"),
         {noreply, State#state{running_tasks=RunningTasks, finished_tasks=FinishedTasks}, RestartInterval};
       {NewRunningTasksList, NewFinishedTasksList} ->
-        {noreply, State#state{running_tasks=RunningTasks ++ NewRunningTasksList, finished_tasks=NewFinishedTasksList}, RestartInterval}
+        {noreply, State#state{running_tasks=RunningTasks ++ [NewRunningTasksList], finished_tasks=NewFinishedTasksList}, RestartInterval}
       end;
 
 
@@ -153,20 +153,19 @@ handle_info(timeout, State =
       logger:log(info, "=== No tasks to run ===~n"),
       {noreply, State#state{running_tasks=RunningTasks, finished_tasks=FinishedTasks}, RestartInterval};
     {NewRunningTasksList, NewFinishedTasksList} ->
-      {noreply, State#state{running_tasks=RunningTasks ++ NewRunningTasksList, finished_tasks=NewFinishedTasksList}, RestartInterval}
+      {noreply, State#state{running_tasks=RunningTasks ++ [NewRunningTasksList], finished_tasks=NewFinishedTasksList}, RestartInterval}
     end;
 
 
 
 handle_info({'DOWN', Ref, process, Pid, Info}, State = #state{running_tasks=RunningTasks, finished_tasks=FinishedTasks}) ->
     logger:log(notice, "== Pid ~p has ended ===~n", [Pid]),
-    RunningTasksList = [{Name, Targets, Fun, {TaskPid, TaskRef}} || {Name, Targets, Fun, {TaskPid, TaskRef}} <- RunningTasks, TaskPid =:= Pid],
+    RunningTasksList = [{Name, Targets, _Fun, {TaskPid, TaskRef}} || {Name, Targets, _Fun, {TaskPid, TaskRef}} <- RunningTasks, TaskPid =:= Pid],
     case length(RunningTasksList) of
       0 ->
         logger:log(info, "=== A process other than a task finished ===~n"),
         {noreply, State};
       1 ->
-        logger:log(info, "HELLLOOOOOOOOOOOOO~n"),
         {Name, Targets, Fun, {TaskPid, TaskRef}} = hd(RunningTasksList),
         case Info of
           normal -> logger:log(info, "=== Task ~p with Pid ~p finished gracefully (~p) ===~n", [Name, Pid, Info]);
@@ -176,7 +175,7 @@ handle_info({'DOWN', Ref, process, Pid, Info}, State = #state{running_tasks=Runn
         NewRunningTasksList = lists:delete({Name, Targets, Fun, {TaskPid, TaskRef}}, RunningTasks),
         NewFinishedTasksList = lists:append(FinishedTasks, [{Name, Targets, Fun}]),
         logger:log(info, "=== NRTL ~p , NFTL ~p ===~n", [NewRunningTasksList, NewFinishedTasksList]),
-        {noreply, State#state{running_tasks=NewRunningTasksList, finished_tasks=NewFinishedTasksList}};
+        {noreply, State#state{running_tasks=NewRunningTasksList, finished_tasks=NewFinishedTasksList}}
     end;
 
 handle_info({'EXIT', _From, Reason}, State) ->
