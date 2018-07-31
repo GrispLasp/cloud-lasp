@@ -45,7 +45,7 @@ start(_StartType, _StartArgs) ->
     logger:log(notice, "Application Master started Node app ~n"),
     start_primary_workers(primary_workers),
     start_primary_workers(distributed_workers),
-    add_measurements(),
+    % add_measurements(),
     % lasp:query({<<"temp">>, state_orset}).
     % lasp:query({<<"states">>, state_orset}).
     % Adding a new task in Lasp :
@@ -67,6 +67,7 @@ stop(_State) ->
 
 start_primary_workers(Workers) ->
     PrimaryWorkers = node_config:get(Workers, []),
+    logger:log(info, "Primary workers are ~p ~n", [PrimaryWorkers]),
     lists:foreach(fun(Worker) ->
                     node_server:start_worker(Worker)
                   end, PrimaryWorkers),

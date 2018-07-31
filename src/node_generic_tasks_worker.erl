@@ -50,7 +50,7 @@ stop() ->
 init({}) ->
     logger:log(notice, "Initializing Node generic tasks server~n"),
     RestartInterval = node_config:get(generic_tasks_restart_interval, ?MIN),
-    % erlang:send_after(5000, self(), {start_all_tasks}),
+    erlang:send_after(5000, self(), {start_all_tasks}),
     % {ok, #state{}}.
     {ok, #state{running_tasks=[], finished_tasks=[], restart_interval = RestartInterval}}.
 
@@ -166,6 +166,7 @@ handle_info({'DOWN', Ref, process, Pid, Info}, State = #state{running_tasks=Runn
         logger:log(info, "=== A process other than a task finished ===~n"),
         {noreply, State};
       1 ->
+        logger:log(info, "HELLLOOOOOOOOOOOOO~n"),
         {Name, Targets, Fun, {TaskPid, TaskRef}} = hd(RunningTasksList),
         case Info of
           normal -> logger:log(info, "=== Task ~p with Pid ~p finished gracefully (~p) ===~n", [Name, Pid, Info]);
@@ -175,7 +176,7 @@ handle_info({'DOWN', Ref, process, Pid, Info}, State = #state{running_tasks=Runn
         NewRunningTasksList = lists:delete({Name, Targets, Fun, {TaskPid, TaskRef}}, RunningTasks),
         NewFinishedTasksList = lists:append(FinishedTasks, [{Name, Targets, Fun}]),
         logger:log(info, "=== NRTL ~p , NFTL ~p ===~n", [NewRunningTasksList, NewFinishedTasksList]),
-        {noreply, State#state{running_tasks=NewRunningTasksList, finished_tasks=NewFinishedTasksList}}
+        {noreply, State#state{running_tasks=NewRunningTasksList, finished_tasks=NewFinishedTasksList}};
     end;
 
 handle_info({'EXIT', _From, Reason}, State) ->

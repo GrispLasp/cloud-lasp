@@ -94,20 +94,20 @@ utilization_sample(S1,S2) ->
   % ?PAUSE10,
   % S2 = scheduler:sample_all(),
   LS = scheduler:utilization(S1,S2),
-  lists:foreach(fun(Scheduler) ->
-                  case Scheduler of
-                    {total, F, P} when is_float(F) ->
-                      logger:log(notice, "=== Total usage = ~p ===~n", [P]);
-                    {weighted, F, P} when is_float(F) ->
-                      logger:log(notice, "=== Weighted usage = ~p ===~n", [P]);
-                    {normal, Id, F, P} when is_float(F) ->
-                      logger:log(notice, "=== Normal Scheduler ~p usage = ~p ===~n", [Id,P]);
-                    {cpu, Id, F, P} when is_float(F) ->
-                      logger:log(notice, "=== Dirty-CPU ~p Scheduler usage = ~p ===~n", [Id,P]);
-                    {io, Id, F, P} when is_float(F) ->
-                      logger:log(notice, "=== Dirty-IO ~p Scheduler usage = ~p ===~n", [Id,P]);
-                    _ ->
-                      logger:log(notice, "=== Scheduler = ~p ===~n", [Scheduler])
-                  end
-                end, LS),
+  % lists:foreach(fun(Scheduler) ->
+  %                 case Scheduler of
+  %                   {total, F, P} when is_float(F) ->
+  %                      logger:log(notice, "=== Total usage = ~p ===~n", [P]);
+  %                   {weighted, F, P} when is_float(F) ->
+  %                      logger:log(notice, "=== Weighted usage = ~p ===~n", [P]);
+  %                   {normal, Id, F, P} when is_float(F) ->
+  %                      logger:log(notice, "=== Normal Scheduler ~p usage = ~p ===~n", [Id,P]);
+  %                   {cpu, Id, F, P} when is_float(F) ->
+  %                      logger:log(notice, "=== Dirty-CPU ~p Scheduler usage = ~p ===~n", [Id,P]);
+  %                   {io, Id, F, P} when is_float(F) ->
+  %                      logger:log(notice, "=== Dirty-IO ~p Scheduler usage = ~p ===~n", [Id,P]);
+  %                   _ ->
+  %                      logger:log(notice, "=== Scheduler = ~p ===~n", [Scheduler])
+  %                 end
+  %               end, LS),
     LS.
